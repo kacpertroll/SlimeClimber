@@ -53,4 +53,13 @@ public class ThirdPersonCamera : MonoBehaviour
             );
         }
     }
+    private void OnEnable()
+    {
+        moveAction.action.Enable();
+    }
+
+    private void OnDisable()
+    {
+        moveAction.action.Disable();
+    }
 }

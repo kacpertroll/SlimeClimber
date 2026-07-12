@@ -32,6 +32,7 @@ MonoBehaviour:
     - aee59cc6f10d2424a8a54e6597bee80d
     - f18c6aa084d2b6644ac7248c782f202d
     - d559009e0aa236e40857e06c71c4911e
+    - dbc6113df9dc01f46894c5aa3ed2bb2f
     values:
     - iconNameOrGuid: TextAsset Icon
       colorIndex: 7
@@ -105,6 +106,10 @@ MonoBehaviour:
       colorIndex: 0
       isIconRecursive: 0
       isColorRecursive: 0
+    - iconNameOrGuid: Settings Icon
+      colorIndex: 1
+      isIconRecursive: 0
+      isColorRecursive: 0
   bookmarks:
   - guid: 401abc9560f4b8b4692309055befb2c9
   - guid: fa85f217019ace74997bf785c78ba37e
@@ -116,3 +121,4 @@ MonoBehaviour:
   - guid: f18c6aa084d2b6644ac7248c782f202d
   - guid: aee59cc6f10d2424a8a54e6597bee80d
   - guid: d122fbf99df4f7a4a8271d65c70da513
+  - guid: dbc6113df9dc01f46894c5aa3ed2bb2f

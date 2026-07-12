@@ -20,6 +20,18 @@ MonoBehaviour:
     - 4a8d41ef2fdde7a46b4c97927dac0c55
     - cc35b9c2dd5956d4e9b80d2230f6ae46
     - 435b1b1971d245040a82039aecf313a1
+    - e3e257dca51e3ee46a249d8311f4050e
+    - d75bb506ad048de41b10441dae7eda5c
+    - a4f92021cb529d341934dfbfb8ef9f27
+    - 8698c7da33dcc12438351041f165423c
+    - fb57c8c8e2589a34498b35bb6483a0f5
+    - bd81fdc0c31da3848a10a8deb7edc1f1
+    - 6a64a335551cbeb4dad14c5b68037149
+    - 4e886487263005c49a0b18484a51048d
+    - 43552797b52469e429b039b23ccaf984
+    - aee59cc6f10d2424a8a54e6597bee80d
+    - f18c6aa084d2b6644ac7248c782f202d
+    - d559009e0aa236e40857e06c71c4911e
     values:
     - iconNameOrGuid: TextAsset Icon
       colorIndex: 7
@@ -45,7 +57,62 @@ MonoBehaviour:
       colorIndex: 0
       isIconRecursive: 0
       isColorRecursive: 0
+    - iconNameOrGuid: cs Script Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: SceneAsset Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: TextAsset Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: Material Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: AudioClip Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: Shader Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: Texture Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: PrefabModel Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: Texture Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: AudioClip Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: AnimationClip Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: Mesh Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
   bookmarks:
   - guid: 401abc9560f4b8b4692309055befb2c9
   - guid: fa85f217019ace74997bf785c78ba37e
   - guid: 4a8d41ef2fdde7a46b4c97927dac0c55
+  - guid: d559009e0aa236e40857e06c71c4911e
+  - guid: 43552797b52469e429b039b23ccaf984
+  - guid: 435b1b1971d245040a82039aecf313a1
+  - guid: 9c53962885c2c4f449125a979d6ad240
+  - guid: f18c6aa084d2b6644ac7248c782f202d
+  - guid: aee59cc6f10d2424a8a54e6597bee80d
+  - guid: d122fbf99df4f7a4a8271d65c70da513

@@ -1,8 +1,29 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    // Raised the frame a jump impulse is applied. Abilities/VFX/audio can subscribe without PlayerMovement knowing about them.
+    public event Action OnJumped;
+
+    // Raised the frame the player transitions from airborne to grounded. Landing impact velocity is passed along for juice scaling.
+    public event Action<float> OnLanded;
+
+    // True while an ability has taken over movement (e.g. Dash, Wall Cling). PlayerMovement skips its own
+    // horizontal movement/jump/gravity handling while this is set, but ground/input reading still runs
+    // so abilities always have fresh data to react to.
+    public bool IsMovementLocked { get; private set; }
+
+    public bool IsGrounded => isGrounded;
+    public Rigidbody Rb => playerRb;
+
+    public void SetMovementLocked(bool locked)
+    {
+        IsMovementLocked = locked;
+    }
+
     [Header("References")]
     [SerializeField] private Transform orientation;
     [SerializeField] private Rigidbody playerRb;
@@ -29,6 +50,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.25f;
     [SerializeField] private LayerMask groundLayer;
 
+    [Header("Wall Sliding")]
+    [Tooltip("A contact normal counts as a 'wall' (not floor/slope) when the absolute value of its Y component is below this.")]
+    [SerializeField] private float maxWallNormalY = 0.15f;
+
+    private readonly List<Vector3> wallContactNormals = new List<Vector3>();
+    private readonly List<Vector3> pendingWallContactNormals = new List<Vector3>();
+
     private Vector2 moveInput;
     private Vector3 moveDirection;
 
@@ -38,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float coyoteTimer;
     private float jumpBufferTimer;
+    private float lastVerticalVelocityBeforeLanding;
 
     private void Awake()
     {
@@ -75,9 +104,25 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        wallContactNormals.Clear();
+        wallContactNormals.AddRange(pendingWallContactNormals);
+        pendingWallContactNormals.Clear();
+
+        if (IsMovementLocked)
+            return;
+
         MovePlayer();
         HandleJump();
         ApplyBetterGravity();
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            if (Mathf.Abs(contact.normal.y) < maxWallNormalY)
+                pendingWallContactNormals.Add(contact.normal);
+        }
     }
 
     private void ReadInput()
@@ -102,6 +147,23 @@ public class PlayerMovement : MonoBehaviour
             moveDirection.Normalize();
     }
 
+    // Cancels only the component of velocity pointing into a wall, per contact normal, leaving
+    // the tangential (sliding) component intact. Without this, directly overwriting linearVelocity
+    // every physics step fights PhysX's own collision response and the player just sticks to walls
+    // instead of sliding along them.
+    private Vector3 AdjustVelocityForWalls(Vector3 velocity)
+    {
+        foreach (Vector3 normal in wallContactNormals)
+        {
+            float intoWall = Vector3.Dot(velocity, normal);
+
+            if (intoWall < 0f)
+                velocity -= normal * intoWall;
+        }
+
+        return velocity;
+    }
+
     private void MovePlayer()
     {
         Vector3 currentHorizontalVelocity = new Vector3(
@@ -111,6 +173,7 @@ public class PlayerMovement : MonoBehaviour
         );
 
         Vector3 targetVelocity = moveDirection * moveSpeed;
+        targetVelocity = AdjustVelocityForWalls(targetVelocity);
 
         float controlMultiplier = isGrounded ? 1f : airControlMultiplier;
 
@@ -148,6 +211,8 @@ public class PlayerMovement : MonoBehaviour
 
             coyoteTimer = 0f;
             jumpBufferTimer = 0f;
+
+            OnJumped?.Invoke();
         }
     }
 
@@ -173,12 +238,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void CheckGround()
     {
+        bool wasGrounded = isGrounded;
+
         isGrounded = Physics.CheckSphere(
             groundCheck.position,
             groundCheckRadius,
             groundLayer,
             QueryTriggerInteraction.Ignore
         );
+
+        if (isGrounded && !wasGrounded)
+            OnLanded?.Invoke(Mathf.Abs(lastVerticalVelocityBeforeLanding));
+
+        if (!isGrounded)
+            lastVerticalVelocityBeforeLanding = playerRb.linearVelocity.y;
     }
 
     private void HandleTimers()
